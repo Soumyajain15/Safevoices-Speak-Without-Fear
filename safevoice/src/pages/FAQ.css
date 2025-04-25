@@ -1,0 +1,20 @@
+/* Style for accordion question headers */
+.accordion-button {
+    background-color: #ffe4ec; /* light pink */
+    color: #d81b60;            /* deeper pink for text */
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 15px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .accordion-button:not(.collapsed) {
+    background-color: #f8bbd0; /* darker when open */
+    color: #880e4f;
+  }
+  
+  .accordion-button:focus {
+    box-shadow: none;
+  }
+  
