@@ -1,16 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {
-  getCounselors,
-  bookSession,
-  submitFeedback,
-  getAvailableSessions
-} = require('../controllers/counselingController');
+const counselingController = require("../controllers/counselingController");
 
-// Counselor routes
-router.get('/counselors', getCounselors);
-router.post('/book-session', bookSession);
-router.post('/feedback', submitFeedback);
-router.get('/available-sessions', getAvailableSessions);
+// Get all counselors
+router.get("/counselors", counselingController.getCounselors);
+
+// Book a session
+router.post("/book-session", counselingController.bookSession);
+
+// Submit feedback
+router.post("/feedback", counselingController.submitFeedback);
+
+// Get all available sessions
+router.get("/available-sessions", counselingController.getAvailableSessions);
 
 module.exports = router;

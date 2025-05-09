@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,11 +8,13 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 
 dotenv.config();
+
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // File Upload Configuration
@@ -29,38 +32,38 @@ const upload = multer({ storage });
 const reportRoutes = require("./routes/reportRoutes");
 const communityRoutes = require("./routes/communityRoutes");
 const counselingRoutes = require("./routes/counselingRoutes");
-const authRoutes = require("./routes/authRoutes"); // Import authentication routes
+const authRoutes = require("./routes/authRoutes");
 
-// Routes
-app.use("/api/report", upload.single("evidence"), reportRoutes);
+// API Routes
+app.use("/api/report", reportRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/counseling", counselingRoutes);
-app.use("/api/auth", authRoutes); // Authentication Routes (Login/Register)
+app.use("/api/auth", authRoutes);
 
-// Root Endpoint
+// Test Endpoint
 app.get("/", (req, res) => {
-  res.send("✅ API is running...");
+  res.send("✅ SafeVoice API is Running...");
 });
 
-// Connect to MongoDB
+// MongoDB Connection
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("✅ MongoDB Connected...");
-  } catch (err) {
-    console.error("❌ MongoDB Connection Error:", err.message);
+    console.log("✅ MongoDB Connected Successfully");
+  } catch (error) {
+    console.error("❌ MongoDB Connection Failed:", error.message);
     process.exit(1);
   }
 };
 
-// Start Server After DB Connection
+// Start Server
 const startServer = async () => {
   await connectDB();
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Server running at: http://localhost:${PORT}`));
 };
 
 startServer();

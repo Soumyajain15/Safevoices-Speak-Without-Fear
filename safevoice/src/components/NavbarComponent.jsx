@@ -15,6 +15,7 @@ function NavbarComponent() {
             <Nav.Link href="/login">Login</Nav.Link>
             <Nav.Link href="/register">Register</Nav.Link>
             <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/heatmap">Heatmap</Nav.Link>
             <Nav.Link as={Link} to="/about">About</Nav.Link>
             <Nav.Link as={Link} to="/legal-help">Legal Help</Nav.Link>
             <Nav.Link as={Link} to="/report">Report</Nav.Link>

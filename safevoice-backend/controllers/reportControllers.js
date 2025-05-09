@@ -21,6 +21,16 @@ exports.submitReport = async (req, res) => {
     res.status(500).json({ error: "Error submitting report." });
   }
 };
+// ✅ Get all reports (for Heatmap)
+exports.getAllReports = async (req, res) => {
+  try {
+    const reports = await Report.find({});
+    res.status(200).json(reports);
+  } catch (error) {
+    console.error("Failed to fetch reports:", error.message);
+    res.status(500).json({ message: "Server error while fetching reports" });
+  }
+};
 
 // ✅ Fix: Ensure category structure matches frontend expectations
 exports.getIncidentCategories = (req, res) => {

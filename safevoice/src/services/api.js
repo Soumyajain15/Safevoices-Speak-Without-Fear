@@ -1,22 +1,20 @@
 import axios from "axios";
 
-// ✅ Base API URL - Make sure this matches your backend
+// ✅ Base API URL
 const API_BASE_URL = "http://localhost:5000/api";
 
-// ✅ Axios instance for API calls (NO global headers here!)
+// ✅ Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-// ✅ Interceptor for consistent error logging
+// ✅ Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const errorMessage = error.response?.data?.message || 
-                         error.message || 
-                         "An unknown error occurred";
+    const errorMessage = error.response?.data?.message || error.message || "An unknown error occurred";
     console.error("API Error:", errorMessage);
-    return Promise.reject(errorMessage);
+    return Promise.reject(new Error(errorMessage));
   }
 );
 
@@ -25,39 +23,27 @@ api.interceptors.response.use(
 // =========================
 
 export const getCounselors = async () => {
-  try {
-    const response = await api.get("/counseling/counselors");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to fetch counselors: " + error.message);
-  }
+  const response = await api.get("/counseling/counselors");
+  return response.data;
 };
 
 export const bookSession = async (sessionData) => {
-  try {
-    const response = await api.post("/counseling/book-session", sessionData);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.message || "Failed to book session");
-  }
+  const response = await api.post("/counseling/book-session", sessionData, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
 };
 
 export const submitFeedback = async (feedbackData) => {
-  try {
-    const response = await api.post("/counseling/feedback", feedbackData);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.message || "Failed to submit feedback");
-  }
+  const response = await api.post("/counseling/feedback", feedbackData, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
 };
 
 export const getAvailableSessions = async () => {
-  try {
-    const response = await api.get("/counseling/available-sessions");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to fetch available sessions: " + error.message);
-  }
+  const response = await api.get("/counseling/available-sessions");
+  return response.data;
 };
 
 // =========================
@@ -65,25 +51,15 @@ export const getAvailableSessions = async () => {
 // =========================
 
 export const submitIncidentReport = async (formData) => {
-  try {
-    const response = await api.post("/report/submit", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to submit report: " + error.message);
-  }
+  const response = await api.post("/report/submit", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
 };
 
 export const getIncidentCategories = async () => {
-  try {
-    const response = await api.get("/report/categories");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to fetch categories: " + error.message);
-  }
+  const response = await api.get("/report/categories");
+  return response.data;
 };
 
 // =========================
@@ -91,52 +67,42 @@ export const getIncidentCategories = async () => {
 // =========================
 
 export const getCommunityPosts = async () => {
-  try {
-    const response = await api.get("/community/posts");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to fetch posts: " + error.message);
-  }
+  const response = await api.get("/community/posts");
+  return response.data;
 };
 
 export const createCommunityPost = async (postData) => {
-  try {
-    const response = await api.post("/community/create-post", postData);
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to create post: " + error.message);
-  }
+  const response = await api.post("/community/create-post", postData, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
 };
 
 export const addCommentToPost = async (postId, commentData) => {
-  try {
-    const response = await api.post(`/community/add-comment/${postId}`, commentData);
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to add comment: " + error.message);
-  }
+  const response = await api.post(`/community/add-comment/${postId}`, commentData, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
 };
 
 export const deleteCommunityPost = async (postId) => {
-  try {
-    const response = await api.delete(`/community/delete-post/${postId}`);
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to delete post: " + error.message);
-  }
+  const response = await api.delete(`/community/delete-post/${postId}`);
+  return response.data;
 };
 
 // =========================
-// 🔐 AUTH APIs (Optional)
+// 🔐 AUTH APIs
 // =========================
+export const getIncidentReports = async () => {
+  const response = await api.get("/report/all");
+  return response.data;
+};
 
 export const loginUser = async (credentials) => {
-  try {
-    const response = await api.post("/auth/login", credentials);
-    return response.data;
-  } catch (error) {
-    throw new Error("Login failed: " + error.message);
-  }
+  const response = await api.post("/auth/login", credentials, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
 };
 
 export default api;

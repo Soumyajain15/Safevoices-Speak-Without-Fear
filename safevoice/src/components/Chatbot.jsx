@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, InputGroup, Card } from "react-bootstrap";
 import "../styles/app.css";
+import axios from "axios";  // Make sure axios is installed (npm install axios)
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
@@ -114,6 +115,32 @@ const Chatbot = () => {
   const setupEmergencyContact = (contactInfo) => {
     addBotMessage(`Emergency contact ${contactInfo} has been set successfully! ✅`);
     setStep(null);
+  };
+
+  // API call to send incident report
+  const sendReport = (incidentDescription) => {
+    axios
+      .post("/api/report-incident", { description: incidentDescription })
+      .then((response) => {
+        addBotMessage("Your incident has been reported successfully. We'll follow up with you soon.");
+      })
+      .catch((error) => {
+        console.error(error);
+        addBotMessage("Sorry, there was an error reporting your incident. Please try again later.");
+      });
+  };
+
+  // API call to book counseling session
+  const bookCounseling = (dateTime) => {
+    axios
+      .post("/api/book-counseling", { dateTime })
+      .then((response) => {
+        addBotMessage("Your counseling session has been booked successfully.");
+      })
+      .catch((error) => {
+        console.error(error);
+        addBotMessage("Sorry, there was an error booking your session. Please try again later.");
+      });
   };
 
   return (
